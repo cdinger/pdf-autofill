@@ -2,11 +2,8 @@
   (:require [clojure.java.jdbc :as jdbc]
             [jdbc.pool.c3p0 :as pool]))
 
-(def db (pool/make-datasource-spec {:classname   "oracle.jdbc.OracleDriver" ; must be in classpath
-                                    :subprotocol "oracle"
-                                    :subname     "thin:@host:1521/service"
-                                    :user        "someuser"
-                                    :password    "somepassword"}))
+(def db (or (System/getenv "DATABASE_URL")
+            "jdbc:sqlite:resources/test.sqlite3"))
 
 (defn query [sql & parameters]
   (jdbc/query db (concat [sql] parameters)))
