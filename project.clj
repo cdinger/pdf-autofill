@@ -11,7 +11,6 @@
                  [org.clojure/java.jdbc "0.4.2"]
                  [org.apache.pdfbox/pdfbox "2.0.0-RC3"]
                  [clojure.jdbc/clojure.jdbc-c3p0 "0.3.2"]
-                 [instaparse "1.4.1"]]
   :plugins [[lein-ring "0.9.7"]
             [lein-auto "0.1.2"]]
   :ring {:handler pdf-autofill.handler/app}
