@@ -4,7 +4,7 @@
             [clojure.java.io :as io])
   (:import [org.apache.pdfbox.pdmodel PDDocument]))
 
-(def pdf (-> "otr014.pdf"
+(def pdf (-> "hello_forms.pdf"
              io/resource
              io/file
              PDDocument/load))
@@ -14,10 +14,10 @@
 
 (deftest test-fields
   (let [f (fields pdf)]
-    (is (= (count f) 69))))
+    (is (= (count f) 2))))
 
 (deftest test-field-value
-  (let [value (field-value pdf "autofill/emplid")]
+  (let [value (field-value pdf "autofill/first_name")]
     ;; "asdf" is already set in the pdf
     (is (= value "asdf"))))
 
