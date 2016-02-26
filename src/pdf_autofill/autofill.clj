@@ -1,27 +1,34 @@
 (ns pdf-autofill.autofill
   (:require [pdf-autofill.db :as db]
-            [pdf-autofill.pdf :refer :all]
-            [pdf-autofill.fields :refer :all]
+            [pdf-autofill.pdf :as p]
+            [pdf-autofill.fields :as f]
             [clojure.string :as s]))
 
-(defn fillable? [field]
-  (let [fieldname (.getPartialName field)]
-    (re-matches #"^autofill/" field)))
-
-(defn fillables [fields]
-  (filter #(fillable? %) fields))
+(defn fillable? [fieldname]
+  (re-matches #"^autofill/.*" fieldname))
 
 (defn field-basename [field]
-  (s/replace (fieldname field) #"^autofill/" ""))
+  (s/replace field #"^autofill/" ""))
 
-(defn field-sql [field]
-  (keyword (field-basename field) fields))
+(defn field-sql [fieldname]
+  (f/sql fieldname))
+
+(defn fillable-fieldnames [pdf]
+  (let [fieldnames (p/fieldnames pdf)]
+    (map #(field-basename %) (filter #(fillable? %) fieldnames))))
 
 (defn lookup-field-value [field current-prinicpal]
-  (db/query (field-sql field) current-prinicpal))
+  (db/query-one (field-sql field) current-prinicpal))
 
-(defn fill [pdf current-principal]
-  (let [fillables (fillables (get-fields pdf))]
-    (do
-      (map #(.setValue % (lookup-field-value %) fillables))))
-      pdf)
+(defn fillable-data
+  "For a given PDF and user ID, returns a map of autofillable form fieldnames
+  and their queried values."
+  [pdf current-prinicpal]
+  (let [fieldnames (fillable-fieldnames pdf)
+        full-fieldnames  (map #(str "autofill/" %) fieldnames)
+        values     (map #(lookup-field-value % current-prinicpal) fieldnames)]
+    (zipmap full-fieldnames values)))
+
+(defn filled-pdf [pdf current-prinicpal]
+  (p/set-values pdf (fillable-data pdf current-prinicpal))
+  pdf)

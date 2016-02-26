@@ -3,5 +3,5 @@
             [pdf-autofill.fields :as f]))
 
 (deftest test-sql
-  (let [sql (f/sql "firstname")]
+  (let [sql (f/sql "first_name")]
     (is (= "select firstname\nfrom users\nwhere username = :principal_id\n" sql))))

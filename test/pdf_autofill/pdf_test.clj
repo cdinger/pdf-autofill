@@ -9,8 +9,9 @@
              io/file
              PDDocument/load))
 
-(deftest test-document
-  (document "http://policy.umn.edu/sites/policy.umn.edu/files/forms/otr014.pdf"))
+; TODO: don't require a network connection to run this
+;(deftest test-document
+  ;(document "http://policy.umn.edu/sites/policy.umn.edu/files/forms/otr014.pdf"))
 
 (deftest test-fields
   (let [f (fields pdf)]
@@ -24,6 +25,7 @@
 (deftest test-set-values
   (let [values {"autofill/last_name" "McTesterson" "autofill/first_name" "Testy"}
         filled-pdf (set-values pdf values)]
-    (doseq [field (filter #(contains? values (.getPartialName %)) (fields filled-pdf))]
-      (is (= (get values (.getPartialName field)) (.getValue field))))))
-
+    (doseq [keyval values]
+      (let [fieldname (first keyval)
+            value     (last keyval)]
+        (is (= value (field-value filled-pdf fieldname)))))))

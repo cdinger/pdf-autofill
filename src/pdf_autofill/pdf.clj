@@ -18,11 +18,9 @@
     (.getValue field)))
 
 (defn set-values [pdf values]
-  (let [all-fields (fields pdf)
-        fields-to-update (filter #(contains? values (.getPartialName %)) all-fields)]
-    (doseq [field fields-to-update]
-      (.setValue field (get values (.getPartialName field))))
-    pdf))
+  (doseq [field (filter #(contains? values (.getPartialName %)) (fields pdf))]
+    (.setValue field (get values (.getPartialName field))))
+  pdf)
 
 (defn fieldnames [doc]
   (map #(.getPartialName %) (fields doc)))

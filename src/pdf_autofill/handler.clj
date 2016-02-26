@@ -6,32 +6,36 @@
             [ring.util.io :refer :all]
             [net.cgrand.enlive-html :as html]
             [pdf-autofill.fields :refer :all]
+            [pdf-autofill.autofill :as autofill]
             [pdf-autofill.pdf :as pdf]))
 
 (html/deftemplate index "public/index.html" [text]
-  [:h1] (html/content (-> fields
+  [:h1] (html/content (-> {:random-number {:sql "select blah from blah"
+                                           :description "This is a blah."}}
                           :random-number
                           :description)))
 
 (defn fill-pdf [url]
   (let [doc (pdf/document url)]
-    (do
-      (pdf/set-values doc {"autofill/last_name" "Blahblah"})
-      (piped-input-stream
-        (fn [output-stream]
-          (pdf/save-pdf-to-stream doc output-stream))))))
+    (piped-input-stream
+      (fn [output-stream]
+        ;(-> (autofill/filled-pdf doc "test")
+            ;(pdf/save-pdf-to-stream output-stream))))))
+        (pdf/save-pdf-to-stream (autofill/filled-pdf doc "test") output-stream)))))
 
 (defn url->filename [url]
   (re-find #"(?<=\/)[^\/]*$" url))
 
-(defn handle-fill [url]
+(defn pdf-response [pdf filename]
   {:headers {"Content-Type" "application/pdf"
-             "Content-Disposition" (str "attachment; filename=\"" (url->filename url) "\"")}
-   :body (fill-pdf url)})
+             "Content-Disposition" (str "attachment; filename=\"" filename "\"")}
+   :body pdf})
+
 
 (defroutes app-routes
   (GET "/" [] (apply str (index "PDF Autofill service")))
-  (GET "/fill" {{url :url} :params} (handle-fill url))
+  (GET "/fill" {{url :url} :params} (pdf-response (fill-pdf url) (url->filename url)))
+  (GET "/sample.pdf" [] (pdf-response (slurp (io/resource "hello_forms.pdf")) "test.pdf"))
   (route/not-found (slurp (io/resource "public/404.html"))))
 
 (def app
