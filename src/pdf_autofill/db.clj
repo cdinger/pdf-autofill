@@ -3,7 +3,7 @@
             [jdbc.pool.c3p0 :as pool]))
 
 (def db (or (System/getenv "DATABASE_URL")
-            "jdbc:sqlite:resources/test.sqlite3"))
+            "jdbc:sqlite:test/resources/test.sqlite3"))
 
 (defn query [sql & parameters]
   (jdbc/query db (concat [sql] parameters)))
