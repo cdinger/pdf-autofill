@@ -1,15 +1,15 @@
 (ns pdf-autofill.db
   (:require [clojure.java.jdbc :as jdbc]
-            [jdbc.pool.c3p0 :as pool]))
+            [jdbc.pool.c3p0 :as pool]
+            [pdf-autofill.config :as config]))
 
-(def db (or (System/getenv "DATABASE_URL")
-            "jdbc:sqlite:test/resources/test.sqlite3"))
+(def db config/database-spec)
 
 (defn query [sql & parameters]
-  (jdbc/query db (concat [sql] parameters)))
+  (jdbc/query db (concat [(str sql)] parameters)))
 
 (defn query-one [sql & parameters]
-  (let [results (apply query (concat [sql] parameters))
+  (let [results (apply query (concat [(str sql)] parameters))
         first-result (first results)
         first-values (vals first-result)
         first-value (first first-values)]

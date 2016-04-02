@@ -10,6 +10,8 @@
             [pdf-autofill.pdf :as pdf]))
 
 (html/deftemplate index "public/index.html" [text]
+  ;; TODO: lookup markdown files:
+  ;; http://stackoverflow.com/questions/8566531/listing-files-in-a-directory-in-clojure
   [:h1] (html/content (-> {:random-number {:sql "select blah from blah"
                                            :description "This is a blah."}}
                           :random-number
