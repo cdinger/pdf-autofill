@@ -10,8 +10,6 @@
             [pdf-autofill.pdf :as pdf]))
 
 (html/deftemplate index "public/index.html" [text]
-  ;; TODO: lookup markdown files:
-  ;; http://stackoverflow.com/questions/8566531/listing-files-in-a-directory-in-clojure
   [:h1] (html/content (-> {:random-number {:sql "select blah from blah"
                                            :description "This is a blah."}}
                           :random-number
@@ -21,8 +19,6 @@
   (let [doc (pdf/document url)]
     (piped-input-stream
       (fn [output-stream]
-        ;(-> (autofill/filled-pdf doc "test")
-            ;(pdf/save-pdf-to-stream output-stream))))))
         (pdf/save-pdf-to-stream (autofill/filled-pdf doc "test") output-stream)))))
 
 (defn url->filename [url]
