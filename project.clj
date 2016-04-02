@@ -3,7 +3,9 @@
   :url "http://example.com/FIXME"
   :min-lein-version "2.0.0"
   :resource-paths ["resources" "lib/ojdbc6.jar"]
-  :dependencies [[org.clojure/clojure "1.7.0"]
+  :source-paths      ["src/clojure"]
+  :java-source-paths ["src/java"]
+  :dependencies [[org.clojure/clojure "1.8.0"]
                  [compojure "1.4.0"]
                  [ring/ring-defaults "0.1.5"]
                  [enlive "1.1.6"]
