@@ -10,9 +10,9 @@
             [pdf-autofill.pdf :as pdf]))
 
 (html/defsnippet fields-snippet "public/index.html"
-  {[:h2] [:pre]}
+  {[:h3] [:pre]}
   [field]
-  [:h2] (html/content (str autofill/prefix (name (first field))))
+  [:h3] (html/content (str autofill/prefix (name (first field))))
   [:p] (html/content (:description (last field)))
   [:pre] (html/content (:sql (last field))))
 
@@ -38,6 +38,7 @@
   (GET "/" [] (apply str (index fields)))
   (GET "/fill" {{url :url} :params} (pdf-response (fill-pdf url) (url->filename url)))
   (GET "/sample.pdf" [] (pdf-response (slurp (io/resource "hello_forms.pdf")) "test.pdf"))
+  (route/resources "/")
   (route/not-found (slurp (io/resource "public/404.html"))))
 
 (def app

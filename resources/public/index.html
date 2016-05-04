@@ -2,25 +2,85 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title></title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  <title>PDF Autofill</title>
+  <link rel="stylesheet" href="calluna-regular.css">
+  <style>
+    body {
+      font-family: "Calluna-Regular", sans;
+      font-size: 1.2em;
+    }
+    h1, h2, h3, h4 {
+      font-family: "Avenir", "Century Gothic", CenturyGothic, AppleGothic, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    div.container {
+      width: 800px;
+      margin: 0 auto;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    td, th {
+      border-bottom: 1px solid #000;
+      padding: .5em 1em .5em 0;
+      margin: 0;
+    }
+    th {
+      font-family: "Avenir", "Century Gothic", CenturyGothic, AppleGothic, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      text-align: left;
+    }
+    tr td:first-child {
+      font-family: monospace;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <h1>PDF Autofill</h1>
-    <p>PDF Autofill is a service that...</p>
+    <p>PDF Autofill is a lightweight web service that automatically fills PDF form fields with known data.</p>
+    <h2>Usage</h2>
+    <p>Using the autofill service is as simple as changing your existing PDF links to go through pdf-autofill. For example, if you're currently linking like:</p>
+    <pre>Complete &lt;a href="some_gnarly_form.pdf"&gt;this painful form&lt;/a&gt;.</pre>
+    <p>to:</p>
+    <pre>Complete &lt;a href="https://yourorg.com/pdf-autofill/autofill?some_gnarly_form.pdf"&gt;this painful form&lt;/a&gt;.</pre>
+
+    <h2>Available fields</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Field name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>autofill/first_name</td>
+          <td>Returns the current user's first name.</td>
+        </tr>
+        <tr>
+          <td>autofill/last_name</td>
+          <td>Returns the current user's last name.</td>
+        </tr>
+        <tr>
+          <td>autofill/today</td>
+          <td>Returns the current date.</td>
+        </tr>
+      </tbody>
+    </table>
+
     <div class="fields">
-      <h2>autofill/blah</h2>
+      <h3>autofill/blah</h3>
       <hr />
       <p>This field does blah.</p>
-      <h3>SQL source</h3>
+      <h4>SQL source</h4>
       <pre>
 select blah
 from blah
 where emplid = :principal_id
       </pre>
+    </div>
   </div>
 </body>
 </html>
