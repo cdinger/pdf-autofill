@@ -9,15 +9,10 @@
             [pdf-autofill.autofill :as autofill]
             [pdf-autofill.pdf :as pdf]))
 
-(html/defsnippet fields-snippet "public/index.html"
-  {[:h3] [:pre]}
-  [field]
-  [:h3] (html/content (str autofill/prefix (name (first field))))
-  [:p] (html/content (:description (last field)))
-  [:pre] (html/content (:sql (last field))))
-
 (html/deftemplate index "public/index.html" [fs]
-  [:div.fields] (html/content (map fields-snippet fs)))
+  [:tbody :tr] (html/clone-for [f fs]
+                 [:td.fieldname] (html/content (str autofill/prefix (name (first f))))
+                 [:td.description] (html/content (:description (last f)))))
 
 (defn fill-pdf [url]
   (let [doc (pdf/document url)]
