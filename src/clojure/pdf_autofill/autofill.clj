@@ -4,11 +4,13 @@
             [pdf-autofill.fields :as f]
             [clojure.string :as s]))
 
+(def prefix "autofill/")
+
 (defn fillable? [fieldname]
-  (re-matches #"^autofill/.*" fieldname))
+  (re-matches (re-pattern (str "^" prefix ".*")) fieldname))
 
 (defn field-basename [field]
-  (s/replace field #"^autofill/" ""))
+  (s/replace field (re-pattern (str "^" prefix)) ""))
 
 (defn field-sql [fieldname]
   (f/sql fieldname))
