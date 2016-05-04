@@ -11,7 +11,7 @@
                  [enlive "1.1.6"]
                  [com.mchange/c3p0 "0.9.5.2"]
                  [org.clojure/java.jdbc "0.4.2"]
-                 [org.apache.pdfbox/pdfbox "2.0.0-RC3"]
+                 [org.apache.pdfbox/pdfbox "2.0.1"]
                  [clojure.jdbc/clojure.jdbc-c3p0 "0.3.2"]
                  [org.xerial/sqlite-jdbc "3.8.11.2"]
                  [endophile "0.1.2"]]
