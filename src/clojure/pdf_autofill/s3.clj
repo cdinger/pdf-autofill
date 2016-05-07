@@ -22,7 +22,7 @@
 
 (defn fields
   ([parsed-seq]
-    (map #(md/field %1) parsed-seq))
+    (first (map #(md/field %1) parsed-seq)))
   ([]
     (fields (parsed-files))))
 
