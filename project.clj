@@ -14,7 +14,8 @@
                  [org.apache.pdfbox/pdfbox "2.0.1"]
                  [clojure.jdbc/clojure.jdbc-c3p0 "0.3.2"]
                  [org.xerial/sqlite-jdbc "3.8.11.2"]
-                 [endophile "0.1.2"]]
+                 [endophile "0.1.2"]
+                 [clj-aws-s3 "0.3.10"]]
   :plugins [[lein-ring "0.9.7"]
             [lein-auto "0.1.2"]]
   :ring {:handler pdf-autofill.handler/app}
