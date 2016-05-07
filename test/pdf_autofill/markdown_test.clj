@@ -23,34 +23,14 @@
   (is (= "Returns the current user's first name" (description first-name-parsed))))
 
 (deftest test-sql
-  (is (= "select first_name
-from ps_names n
-where eff_status = 'A'
-  and name_type = 'PRI'
-  and effdt = (
-    select max(effdt)
-    from ps_names
-    where emplid = n.emplid
-      and name_type = n.name_type
-      and effdt <= sysdate
-  )\n" (sql first-name-parsed))))
+  (is (= "select firstname from users where username = :principal_id" (sql first-name-parsed))))
 
 (deftest test-field
   (let [parsed (parsed-file (first markdown-files))
         f (field parsed)]
     (is (= (keys  f) '(:first_name)))
     (is (= (:description (:first_name f)) "Returns the current user's first name"))
-    (is (= (:sql (:first_name f)) "select first_name
-from ps_names n
-where eff_status = 'A'
-  and name_type = 'PRI'
-  and effdt = (
-    select max(effdt)
-    from ps_names
-    where emplid = n.emplid
-      and name_type = n.name_type
-      and effdt <= sysdate
-  )\n"))))
+    (is (= (:sql (:first_name f)) "select firstname from users where username = :principal_id"))))
 
 (deftest test-fields
   (is (= '(:first_name :last_name) (keys (fields path-to-markdown-dir)))))
