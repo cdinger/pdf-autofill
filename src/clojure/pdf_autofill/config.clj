@@ -1,6 +1,7 @@
 (ns pdf-autofill.config)
 
-(def defaults {:database-spec "jdbc:sqlite:test/resources/test.sqlite3"
+(def defaults {:database-spec {:subprotocol "sqlite"
+                               :subname "test/resources/test.sqlite3"}
                :markdown-path "dev-resources/fields"})
 
 (def env {:database-spec (when-let [envspec (System/getenv "DATABASE_SPEC")]

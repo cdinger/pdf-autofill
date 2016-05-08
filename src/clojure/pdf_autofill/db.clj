@@ -3,7 +3,7 @@
             [jdbc.pool.c3p0 :as pool]
             [pdf-autofill.config :as config]))
 
-(def db config/database-spec)
+(def db (pool/make-datasource-spec config/database-spec))
 
 (defn query [sql & parameters]
   (jdbc/query db (concat [(str sql)] parameters)))
