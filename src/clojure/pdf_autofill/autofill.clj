@@ -20,7 +20,9 @@
     (map #(field-basename %) (filter #(fillable? %) fieldnames))))
 
 (defn lookup-field-value [field current-prinicpal]
-  (db/query-one (field-sql field) current-prinicpal))
+  (if (nil? current-prinicpal)
+    nil
+    (db/query-one (field-sql field) current-prinicpal)))
 
 (defn fillable-data
   "For a given PDF and user ID, returns a map of autofillable form fieldnames
