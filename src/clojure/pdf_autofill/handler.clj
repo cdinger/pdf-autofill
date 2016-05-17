@@ -28,13 +28,14 @@
              "Content-Disposition" (str "attachment; filename=\"" filename "\"")}
    :body pdf})
 
-
 (defroutes app-routes
   (GET "/" [] (apply str (index fields)))
-  (GET "/fill" {headers :headers {url :url} :params} (pdf-response (fill-pdf url (get headers "remote_user")) (url->filename url)))
+  (GET "/headers" {headers :headers} (str headers))
+  (GET "/fill" {headers :headers {url :url} :params} (pdf-response (fill-pdf url (get headers config/principal-header)) (url->filename url)))
   (GET "/sample.pdf" [] (pdf-response (slurp (io/resource "hello_forms.pdf")) "test.pdf"))
   (route/resources "/")
   (route/not-found (slurp (io/resource "public/404.html"))))
 
 (def app
   (wrap-defaults app-routes site-defaults))
+
