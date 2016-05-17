@@ -7,9 +7,10 @@
             [net.cgrand.enlive-html :as html]
             [pdf-autofill.fields :refer :all]
             [pdf-autofill.autofill :as autofill]
-            [pdf-autofill.pdf :as pdf]))
+            [pdf-autofill.pdf :as pdf]
+            [pdf-autofill.config :as config]))
 
-(html/deftemplate index "public/index.html" [fs]
+(html/deftemplate index config/template-path [fs]
   [:tbody :tr] (html/clone-for [f fs]
                  [:td.fieldname] (html/content (str autofill/prefix (name (first f))))
                  [:td.description] (html/content (:description (last f)))))
