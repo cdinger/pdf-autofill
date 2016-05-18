@@ -30,7 +30,7 @@
    :body pdf})
 
 (defroutes app-routes
-  (GET "/" [] (apply str (index fields)))
+  (GET "/" [] (apply str (index (sort fields))))
   (GET "/headers" {headers :headers} (str headers))
   (GET "/fill" {headers :headers {url :url} :params} (pdf-response (fill-pdf url (get headers config/principal-header)) (url->filename url)))
   (GET "/sample.pdf" [] (pdf-response (slurp (io/resource "hello_forms.pdf")) "test.pdf"))
