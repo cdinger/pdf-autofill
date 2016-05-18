@@ -3,11 +3,13 @@
             [pdf-autofill.config :as config]
             [pdf-autofill.markdown :as md]))
 
-(def cred {:access-key config/s3-access-key :secret-key config/s3-secret-key})
+(def cred {:access-key config/s3-access-key
+           :secret-key config/s3-secret-key})
 
 (defn files
   ([credentials bucket]
-    (s3/list-objects credentials bucket))
+    (if (every? identity [(:access-key cred) (:secret-key cred) config/s3-bucket])
+      (s3/list-objects credentials bucket)))
   ([]
     (files cred config/s3-bucket)))
 
