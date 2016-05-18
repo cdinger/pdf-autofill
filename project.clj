@@ -1,4 +1,4 @@
-(defproject pdf-autofill "0.1.0-SNAPSHOT"
+(defproject pdf-autofill "1.0.0"
   :description "A clojure web service that automatically fills PDFs based on user-defined queries"
   :url "http://example.com/FIXME"
   :min-lein-version "2.0.0"
