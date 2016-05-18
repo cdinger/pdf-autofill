@@ -6,28 +6,72 @@ complete a financial aid form that asks for things like: student ID, first name,
 last name, address, etc. The institution requiring this form already knows these
 data about you (provided you're authenticated)—they shouldn't need to ask you.
 
+This application should not be the first thing you grab for in making paper
+forms go away. This is only meant to ease the pain of PDF forms where PDF forms
+are absolutely necessary or where your business refuses to collect data via other
+means.
+
 ## Usage
 
-Run the pdf-autofill jar directly with `java -jar pdf-autofill` or drop it into
-your favorite servlet container.
+Run the pdf-autofill jar directly with `java -jar target/pdf-autofill-0.1.0-SNAPSHOT.jar`
+or drop the `war` file into your favorite servlet container.
+
+### Field definitions
+
+A `field` is an atomic, scalar value that can be queried from a database (usually based
+on the currently-logged-in user). `fields` are defined as markdown files. The markdown
+format allows fields to be defined and maintained by subject matter experts, business
+analysts, and programmers alike.
+
+The markdown format for defining a field is simple:
+
+    # field-name
+
+    A brief description of the scalar value this field returns.
+
+    ```SQL
+    select blah
+    from some_table
+    where userid = :principal_id
+    ```
+
+An example for querying first name from a Peoplesoft database might look like this:
+
+    # first_name
+
+    Returns the first name of the current user.
+
+    ```SQL
+    select first_name
+    from ps_names n
+    where n.emplid = :principal_id
+      and n.eff_status = 'A'
+      and n.name_type = 'PRI'
+      and n.effdt = (
+        select max(effdt)
+        from ps_names
+        where emplid = n.emplid
+          and name_type = n.name_type
+          and effdt <= sysdate
+      )
+    ```
 
 ### Configuration
 
-pdf-autofill uses environment variables to configure the database connection and
-directory location for markdown files:
+pdf-autofill is configured entirely using environment variables:
 
-`DATABASE_URL=somejdbcconnectionurl`
-`MARKDOWN_PATH=/some/file/path/`
+Required:
 
-### Provide field definitions
+- `DATABASE_SPEC={}`
+- `MARKDOWN_PATH=/some/file/path/`
 
-Fields can be provided in two ways: markdown files, or clojure code. Markdown files
-great for simple, query-based fields. There's no programming necessary (other than
-writing the query), so it's a great fit for maintenance by analysts.
+Optional:
 
-If you need more flexibility or if you need to connect to non-SQL sources, you
-can choose to write custom clojure/java/ruby/your-favorite-jvm-language code to
-provide data to fields by implementing the `pdf-autofill.field` protocol.
+- `S3_BUCKET=my-pdf-autofill-bucket`
+- `S3_ACCESS_KEY=youraccesskey`
+- `S3_SECRET_KEY=yoursecretkey`
+- `PRINCIPAL_HEADER=remote_user`
+- `TEMPLATE_PATH=/path/to/custom/template.html`
 
 ### Link to PDF via the web service
 
@@ -35,31 +79,35 @@ Using the autofill service is as simple as changing your existing PDF links to g
 through pdf-autofill. For example, if you're currently linking like:
 
 ```html
-Complete <a href="some_gnarly_form.pdf">this painful form</a>.
+Complete <a href="http://example.com/some_gnarly_form.pdf">this painful form</a>.
 ```
 
 to:
 
 ```html
-Complete <a href="https://yourorg.com/pdf-autofill/autofill?some_gnarly_form.pdf">this painful form</a>.
+Complete <a href="https://yourorg.com/pdf-autofill/fill?url=http://example.com/some_gnarly_form.pdf">this painful form</a>.
 ```
 
 To the user, this service is completely transparent—they get prompted to download the
 form (or it opens in their browser). The only difference is, it arrives pre-populated
-with known data. And the world is a better place.
+with known data.
 
-## Prerequisites
+## Development
 
-You will need [Leiningen][] 2.0.0 or above installed.
+You will need [Leiningen][] 2.0.0 or above installed to build this project
 
 [leiningen]: https://github.com/technomancy/leiningen
 
-## Running
+### Running
 
 To start a web server for the application, run:
 
     lein ring server
 
+### Run tests
+
+    lein test
+
 ## License
 
-Copyright © 2015 FIXME
+Copyright © 2015
