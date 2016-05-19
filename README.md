@@ -60,17 +60,32 @@ An example for querying first name from a Peoplesoft database might look like th
 
 pdf-autofill is configured entirely using environment variables:
 
-Required:
+#### Required config
 
-- `DATABASE_SPEC={}`
-- `MARKDOWN_PATH=/some/file/path/`
+##### `DATABASE_SPEC`
 
-Optional:
+`DATABASE_SPEC='{:classname "oracle.jdbc.OracleDriver"
+                 :subprotocol "oracle"
+                 :subname "thin:@172.27.1.7:1521:SID"
+                 :user "user"
+                 :password "pwd"}}'`
 
+#### `MARKDOWN_PATH`
+
+`MARKDOWN_PATH=/path/to/your/markdown/files/`
+
+You can optionally configure these additional items:
+
+Using S3 for markdown field definitions:
 - `S3_BUCKET=my-pdf-autofill-bucket`
 - `S3_ACCESS_KEY=youraccesskey`
 - `S3_SECRET_KEY=yoursecretkey`
+
+Customizing the HTTP header that contains the currently logged in user
+(defaults to `remote_user`):
 - `PRINCIPAL_HEADER=remote_user`
+
+Customize the HTML template used for the index page (listing fields):
 - `TEMPLATE_PATH=/path/to/custom/template.html`
 
 ### Link to PDF via the web service
