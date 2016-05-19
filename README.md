@@ -60,9 +60,12 @@ An example for querying first name from a Peoplesoft database might look like th
 
 pdf-autofill is configured entirely using environment variables:
 
-#### Required config
+#### Required
 
-##### `DATABASE_SPEC`
+##### DATABASE_SPEC
+
+`DATABASE_SPEC` should contain a clojure map that defines a database connection
+spec.
 
 `DATABASE_SPEC='{:classname "oracle.jdbc.OracleDriver"
                  :subprotocol "oracle"
@@ -70,23 +73,41 @@ pdf-autofill is configured entirely using environment variables:
                  :user "user"
                  :password "pwd"}}'`
 
-#### `MARKDOWN_PATH`
+##### MARKDOWN_PATH
+
+`MARKDOWN_PATH` is the filesystem path to the markdown files that
+[define your fields](#field-definitions).
 
 `MARKDOWN_PATH=/path/to/your/markdown/files/`
 
-You can optionally configure these additional items:
+#### Optional
 
-Using S3 for markdown field definitions:
-- `S3_BUCKET=my-pdf-autofill-bucket`
-- `S3_ACCESS_KEY=youraccesskey`
-- `S3_SECRET_KEY=yoursecretkey`
+##### S3
 
-Customizing the HTTP header that contains the currently logged in user
-(defaults to `remote_user`):
-- `PRINCIPAL_HEADER=remote_user`
+You can optionally use S3 to store markdown field definitions with these three
+variables:
 
-Customize the HTML template used for the index page (listing fields):
-- `TEMPLATE_PATH=/path/to/custom/template.html`
+```
+S3_BUCKET=your-pdf-autofill-bucket
+S3_ACCESS_KEY=youraccesskey
+S3_SECRET_KEY=yoursecretkey
+```
+
+##### PRINCIPAL_HEADER
+
+You can customize the HTTP header that contains the currently logged in user.
+This defaults to the `remote_user` header value (ring provides these lowercased).
+
+`PRINCIPAL_HEADER=remote_user`
+
+##### TEMPLATE_PATH
+
+Customize the HTML template used for the index page (listing fields) using the
+`TEMPLATE_PATH` variable. Enlive is used for templating, so your custom template
+can be plain ol' HTML, but it needs to have the same structure as the [default
+template](resources/public/index.html).
+
+`TEMPLATE_PATH=/path/to/custom/template.html`
 
 ### Link to PDF via the web service
 
