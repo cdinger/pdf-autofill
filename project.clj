@@ -5,8 +5,10 @@
   :resource-paths ["resources" "lib/ojdbc6.jar"]
   :source-paths      ["src/clojure"]
   :java-source-paths ["src/java"]
+  :main pdf-autofill.handler
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [compojure "1.4.0"]
+                 [ring/ring-jetty-adapter "1.4.0"]
                  [ring/ring-defaults "0.1.5"]
                  [enlive "1.1.6"]
                  [com.mchange/c3p0 "0.9.5.2"]

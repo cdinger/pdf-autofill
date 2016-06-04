@@ -4,6 +4,7 @@
             [compojure.route :as route]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [ring.util.io :refer :all]
+            [ring.adapter.jetty :as jetty]
             [net.cgrand.enlive-html :as html]
             [pdf-autofill.fields :refer :all]
             [pdf-autofill.autofill :as autofill]
@@ -40,3 +41,8 @@
 (def app
   (wrap-defaults app-routes site-defaults))
 
+(defn start-server []
+  (jetty/run-jetty app {:port 8080 :join? false}))
+
+(defn -main [& args]
+  (start-server))
