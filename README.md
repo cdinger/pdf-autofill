@@ -1,4 +1,4 @@
-# pdf-autofill
+# pdf-autofill [![Build Status](https://travis-ci.org/cdinger/pdf-autofill.svg?branch=master)](https://travis-ci.org/cdinger/pdf-autofill)
 
 pdf-autofill is a lightweight web service that automatically fills PDF form
 fields with known data. For example, as a student, you may be required to
